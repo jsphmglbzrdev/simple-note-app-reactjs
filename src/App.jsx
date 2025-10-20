@@ -17,7 +17,7 @@ const App = () => {
 	}, [theme])
 
 	return (
-		<div className={`${theme ?"bg-gray-900/80" : "bg-gray-100/80"} font-[poppins] transition-all duration-500 w-full min-h-screen`}>
+		<div className={`${theme ?"bg-gray-900/80" : "bg-gray-100/50"} font-[poppins] transition-all duration-500 w-full min-h-screen`}>
 			<Header theme={theme} changeTheme={handleTheme}/>
 			<TodoTable theme={theme}/>
 		</div>

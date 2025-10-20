@@ -23,7 +23,7 @@ const Header = ({ theme, changeTheme }) => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Moon />
+              <Moon className="text-2xl"/>
               Dark Theme
             </div>
           )}

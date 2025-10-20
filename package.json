@@ -1,5 +1,5 @@
 {
-  "name": "todo-list-project",
+  "name": "todo-list-app-reactjs",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-switch": "^1.2.6",
     "@tailwindcss/vite": "^4.1.14",
+    "@uiw/react-color-circle": "^2.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
