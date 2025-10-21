@@ -16,7 +16,10 @@ const TodoTable = ({ theme }) => {
   const [toast, setToast] = useState({
     show: false,
     type: "",
+		message: ""
   });
+
+	  // Function passed down to children
 
   const [hex, setHex] = useState('#2D336B');
 	const [color, showColor] = useState(false)
@@ -24,7 +27,7 @@ const TodoTable = ({ theme }) => {
 
   const storeTask = () => {
     if (!taskValue.trim()) {
-      setToast({ show: true, type: "error" });
+      setToast({ show: true, type: "error", message: "There is no task to add!" });
       return;
     }
     const data = {
@@ -40,7 +43,7 @@ const TodoTable = ({ theme }) => {
 		localStorage.setItem("savedTask", JSON.stringify([...savedTask, data]))
 
     setTaskValue("");
-    setToast({ show: true, type: "success" });
+    setToast({ show: true, type: "success", message: "Task added successfully!" });
   };
 
 	
@@ -53,6 +56,8 @@ const TodoTable = ({ theme }) => {
 
 	}, [hex])
 
+  const showToast = (data) => setToast({ ...data, show: true });
+
   return (
     <div
       className={`min-h-screen w-full ${
@@ -60,7 +65,6 @@ const TodoTable = ({ theme }) => {
       }`}
     >
  
-
       {/* ===== TOAST MESSAGE ===== */}
       <ToastMessage toastData={toast} theme={theme} setToastData={setToast} />
 
@@ -122,7 +126,7 @@ const TodoTable = ({ theme }) => {
 
       {/* ===== TASK DISPLAY ===== */}
       <div className="pt-36 pb-10 flex justify-center px-5">
-        <TaskDisplay dataTasks={savedTask} theme={theme} />
+        <TaskDisplay showToast={showToast} dataTasks={savedTask} theme={theme} />
       </div>
     </div>
   );

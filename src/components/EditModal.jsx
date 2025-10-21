@@ -1,32 +1,68 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Circle from "@uiw/react-color-circle";
 
-const EditModal = ({ task, closeModal }) => {
-  const [editTask, setEditTitle] = useState(task.task);
-  const [hex, setHex] = useState("#F44E3B");
+const EditModal = ({ task, closeModal, showToast }) => {
+  const [editTitle, setEditTitle] = useState(task.task);
+  const [editDescription, setEditDescription] = useState("");
 
-  const handleEditTask = (e) => {
-    setEditTitle(e.target.value);
+  const [hex, setHex] = useState(task.colorBg);
+ 
+
+  const handleUpdateData = () => {
+    const dataTask = localStorage.getItem("savedTask");
+    const savedTask = dataTask ? JSON.parse(dataTask) : [];
+
+    // Update the existing task by id
+    const updatedTasks = savedTask.map((item) =>
+      item.id === task.id
+        ? {
+            ...item,
+            task: editTitle,
+            description: editDescription, // if you want to save it
+            date: new Date().toLocaleDateString(),
+            colorBg: hex,
+          }
+        : item
+    );
+
+    localStorage.setItem("savedTask", JSON.stringify(updatedTasks));
+		console.log("Saved tasks:", savedTask);
+console.log("Editing task id:", task.id);
+
+    showToast({
+      show: true,
+      type: "success",
+      message: "Task updated successfully!",
+    });
+    closeModal(null);
   };
+
+  useEffect(() => {
+		setEditTitle(task.task)
+		setEditDescription(task.description)
+		setHex(task.colorBg)
+	}, [task]);
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center backdrop-blur-md shadow-2xl">
       <div
-        className="w-[400px] max-w-full p-6 rounded-lg shadow-lg relative"
-        style={{ backgroundColor: task.colorBg }}
+        className="w-[400px] transition-all duration-500 max-w-full p-6 rounded-lg shadow-lg relative"
+        style={{ backgroundColor: hex }}
       >
         <div className="flex flex-col space-y-4">
           {/* Title input */}
           <input
-            value={editTask}
+            value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             placeholder="Title"
             className="text-xl w-full border-none outline-none text-white font-bold"
           />
 
           <textarea
+            value={editDescription}
+            onChange={(e) => setEditDescription(e.target.value)}
             placeholder="Enter your notes here..."
-            className="text-sm w-full h-40 text-white border-none outline-none resize-none overflow-y-auto"
+            className="text-sm w-full h-55 mb-10 border-none outline-none text-white resize-none overflow-y-auto custom-scroll"
           />
 
           <div
@@ -39,21 +75,22 @@ const EditModal = ({ task, closeModal }) => {
             {task.date}
           </div>
           <div className="absolute bottom-2 right-5">
-						<div className="flex items-center justify-center gap-2">
-
-            <Circle
-              colors={["#F44E3B", "#0b7a5d", "#FCDC00", "#DBDF00"]}
-              className="bg-gray-800 p-2 rounded-xl"
-              color={hex}
-              onChange={(color) => {
-                setHex(color.hex);
-              }}
-            />
-            <div className=" text-xs cursor-pointer bg-gray-800 transition-all duration-200 hover:bg-gray-900 text-white rounded-xl px-5 py-2">
-              Save
+            <div className="flex items-center justify-center gap-2">
+              <Circle
+                colors={["#2D336B", "#0b7a5d", "#34656D", "#344F1F"]}
+                className="bg-gray-800 p-2 rounded-xl"
+                color={hex}
+                onChange={(color) => {
+                  setHex(color.hex);
+                }}
+              />
+              <div
+                onClick={handleUpdateData}
+                className=" text-xs cursor-pointer bg-gray-800 transition-all duration-200 hover:bg-gray-900 text-white rounded-xl px-5 py-2"
+              >
+                Save
+              </div>
             </div>
-						</div>
-
           </div>
         </div>
       </div>

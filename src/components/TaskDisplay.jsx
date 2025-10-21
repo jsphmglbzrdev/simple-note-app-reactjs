@@ -1,10 +1,12 @@
 import { EllipsisVertical } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import EditModal from "./EditModal";
+import ToastMessage from "./ToastMessage";
 
-const TaskDisplay = ({ dataTasks = [], theme }) => {
+const TaskDisplay = ({ dataTasks = [], showToast }) => {
   const [openMenu, setOpenMenu] = useState(null);
   const [editModal, setEditModal] = useState(null);
+	
 
   const menuRefs = useRef({});
 
@@ -43,20 +45,25 @@ const TaskDisplay = ({ dataTasks = [], theme }) => {
 
   return (
     <div className="w-full max-w-6xl relative">
+
       {dataTasks.length === 0 ? (
         <div className="text-center opacity-60 italic">No notes yet</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-* sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {dataTasks.map((task) => (
             <div
               key={task.id}
               ref={(el) => (menuRefs.current[task.id] = el)}
-              className="relative rounded-xl shadow-md p-4 break-words"
+              className="relative rounded-xl shadow-lg p-4 break-words h-auto min-h-[120px] flex flex-col justify-between"
+
               style={{ backgroundColor: task.colorBg }}
             >
               <div className="text-white text-lg font-semibold mb-2">
                 {task.task}
               </div>
+							<div className="text-xs text-white">
+								{task.description}
+							</div>
               <div className="text-white text-xs opacity-70 text-right">
                 {task.date}
               </div>
@@ -81,7 +88,7 @@ const TaskDisplay = ({ dataTasks = [], theme }) => {
               )}
 
               {editModal === task.id && (
-								<EditModal task={task} closeModal={setEditModal}/>
+								<EditModal showToast={showToast} task={task} closeModal={setEditModal}/>
               )}
             </div>
           ))}
