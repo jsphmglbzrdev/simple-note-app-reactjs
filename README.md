@@ -11,7 +11,7 @@ It’s a simple project built for practicing React concepts and UI design.
 **Simple Note App** is designed to help users jot down quick notes and organize their thoughts.  
 It uses `localStorage` to persist notes between sessions, so your data stays even after a browser refresh.
 
-**Beginenr Project** this project is suited for beginner to understand and practice the usage of different react hooks, proper props, managing the state, 
+**Beginner Project** this project is suited for beginner to understand and practice the usage of different react hooks, handling props, managing state, 
 and storing the data on web local storage.
 
 ---
@@ -24,7 +24,7 @@ and storing the data on web local storage.
 - 🎨 **Custom Colors** – Choose note background colors via a color picker.  
 - 💾 **Persistent Storage** – Notes are saved using `localStorage`.  
 - 📱 **Responsive Design** – Works well on both desktop and mobile screens.  
-
+- ⚡ **Lucide Icons** – Modern, lightweight icons for an improved UI experience.  
 ---
 
 ## 🧠 Technologies Used
@@ -33,7 +33,7 @@ and storing the data on web local storage.
 - ⚡ **Vite** – Fast development build tool  
 - 🎨 **Tailwind CSS** – Utility-first CSS framework for styling  
 - 🎨 **@uiw/react-color-circle** – For color picking functionality  
-
+- 💡 **Lucide React** – Icon library for clean, consistent icons  
 ---
 
 ## ⚙️ Installation & Setup
