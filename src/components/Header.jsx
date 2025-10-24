@@ -11,7 +11,7 @@ const Header = ({ theme, changeTheme }) => {
           theme ? "text-white" : "text-black"
         } flex py-2 px-8 items-center justify-between`}
       >
-        <div>YourSimpleTodo</div>
+        <div className="font-semibold">YourSimpleNote</div>
         <button
           onClick={changeTheme}
           className={`${theme ? 'bg-gray-100 text-black hover:bg-white transition-all duration-200' : 'bg-black text-white hover:bg-gray-800 transition-all duration-200'} py-1 px-3 cursor-pointer text-black text-sm rounded-full flex items-center gap-2`}

@@ -1,24 +1,22 @@
 import { useState, useEffect } from "react";
 import Circle from "@uiw/react-color-circle";
 
-const EditModal = ({ task, closeModal, showToast }) => {
+const EditModal = ({ task, closeModal, showToast, refreshTasks }) => {
   const [editTitle, setEditTitle] = useState(task.task);
   const [editDescription, setEditDescription] = useState("");
 
   const [hex, setHex] = useState(task.colorBg);
- 
 
   const handleUpdateData = () => {
     const dataTask = localStorage.getItem("savedTask");
     const savedTask = dataTask ? JSON.parse(dataTask) : [];
 
-    // Update the existing task by id
     const updatedTasks = savedTask.map((item) =>
       item.id === task.id
         ? {
             ...item,
             task: editTitle,
-            description: editDescription, // if you want to save it
+            description: editDescription,
             date: new Date().toLocaleDateString(),
             colorBg: hex,
           }
@@ -26,22 +24,22 @@ const EditModal = ({ task, closeModal, showToast }) => {
     );
 
     localStorage.setItem("savedTask", JSON.stringify(updatedTasks));
-		console.log("Saved tasks:", savedTask);
-console.log("Editing task id:", task.id);
-
+    console.log(updatedTasks);
     showToast({
       show: true,
       type: "success",
       message: "Task updated successfully!",
     });
+    refreshTasks();
+    // Pass updated tasks to parent
     closeModal(null);
   };
 
   useEffect(() => {
-		setEditTitle(task.task)
-		setEditDescription(task.description)
-		setHex(task.colorBg)
-	}, [task]);
+    setEditTitle(task.task);
+    setEditDescription(task.description);
+    setHex(task.colorBg);
+  }, [task]);
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center backdrop-blur-md shadow-2xl">

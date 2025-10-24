@@ -1,33 +1,33 @@
 import { useState, useEffect } from "react";
 import ToastMessage from "./ToastMessage";
 import TaskDisplay from "./TaskDisplay";
-import Circle from '@uiw/react-color-circle';
-
-
+import Circle from "@uiw/react-color-circle";
 
 const TodoTable = ({ theme }) => {
-
-	const [savedTask, setSavedTask] = useState(() => {
-		const getSavedTask = localStorage.getItem("savedTask")
-		return getSavedTask ? JSON.parse(getSavedTask) : []
-	})
+  const [savedTask, setSavedTask] = useState(() => {
+    const getSavedTask = localStorage.getItem("savedTask");
+    return getSavedTask ? JSON.parse(getSavedTask) : [];
+  });
 
   const [taskValue, setTaskValue] = useState("");
   const [toast, setToast] = useState({
     show: false,
     type: "",
-		message: ""
+    message: "",
   });
 
-	  // Function passed down to children
+  // Function passed down to children
 
-  const [hex, setHex] = useState('#2D336B');
-	const [color, showColor] = useState(false)
-	
+  const [hex, setHex] = useState("#2D336B");
+  const [color, showColor] = useState(false);
 
   const storeTask = () => {
     if (!taskValue.trim()) {
-      setToast({ show: true, type: "error", message: "There is no task to add!" });
+      setToast({
+        show: true,
+        type: "error",
+        message: "There is no task to add!",
+      });
       return;
     }
     const data = {
@@ -35,28 +35,33 @@ const TodoTable = ({ theme }) => {
       task: taskValue,
       date: new Date().toLocaleDateString(),
       isDone: false,
-			colorBg: hex
+      colorBg: hex,
     };
 
-		setSavedTask([...savedTask, data])
+    setSavedTask([...savedTask, data]);
 
-		localStorage.setItem("savedTask", JSON.stringify([...savedTask, data]))
+    localStorage.setItem("savedTask", JSON.stringify([...savedTask, data]));
 
     setTaskValue("");
-    setToast({ show: true, type: "success", message: "Task added successfully!" });
+    setToast({
+      show: true,
+      type: "success",
+      message: "Task added successfully!",
+    });
   };
-
-	
 
   const handleTaskValue = (e) => {
     setTaskValue(e.target.value);
   };
 
-	useEffect(() => {
-
-	}, [hex])
+  useEffect(() => {}, [savedTask]);
 
   const showToast = (data) => setToast({ ...data, show: true });
+
+  const refreshTasks = () => {
+    const getSavedTask = localStorage.getItem("savedTask");
+    setSavedTask(getSavedTask ? JSON.parse(getSavedTask) : []);
+  };
 
   return (
     <div
@@ -64,7 +69,6 @@ const TodoTable = ({ theme }) => {
         theme ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
- 
       {/* ===== TOAST MESSAGE ===== */}
       <ToastMessage toastData={toast} theme={theme} setToastData={setToast} />
 
@@ -76,9 +80,9 @@ const TodoTable = ({ theme }) => {
           <input
             value={taskValue}
             onChange={handleTaskValue}
-						onKeyDown={(e) => {
-							e.key === "Enter" && storeTask();
-						}}
+            onKeyDown={(e) => {
+              e.key === "Enter" && storeTask();
+            }}
             type="text"
             placeholder="Take a note..."
             className={`border-2 rounded-md transition-all duration-200
@@ -91,22 +95,28 @@ const TodoTable = ({ theme }) => {
             `}
           />
 
-							<div className="">
-								<div onClick={() => showColor(prev => !prev)} style={{backgroundColor: hex}} className="relative cursor-pointer top-3 flex items-center justify-center w-6 h-6 rounded-full">
-									<div className={`${color ? 'flex' : 'hidden'} absolute top-8 right-0 left-0 justify-center text-center`}>
-										<Circle
-										colors={[ '#2D336B', '#0b7a5d', '#34656D', '#344F1F' ]}
-										className=" backdrop-blur-xl rounded-xl bg-gray-500 p-2 shadow-2xl "
-										color={hex}
-										onChange={(color) => {
-											setHex(color.hex);
-										}}
-									/>
-									</div>
-								</div>
-						
-								
-							</div>
+          <div className="">
+            <div
+              onClick={() => showColor((prev) => !prev)}
+              style={{ backgroundColor: hex }}
+              className="relative cursor-pointer top-3 flex items-center justify-center w-6 h-6 rounded-full"
+            >
+              <div
+                className={`${
+                  color ? "flex" : "hidden"
+                } absolute top-8 right-0 left-0 justify-center text-center`}
+              >
+                <Circle
+                  colors={["#2D336B", "#0b7a5d", "#34656D", "#344F1F"]}
+                  className=" backdrop-blur-xl rounded-xl bg-gray-500 p-2 shadow-2xl "
+                  color={hex}
+                  onChange={(color) => {
+                    setHex(color.hex);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
 
           <button
             onClick={storeTask}
@@ -126,7 +136,12 @@ const TodoTable = ({ theme }) => {
 
       {/* ===== TASK DISPLAY ===== */}
       <div className="pt-36 pb-10 flex justify-center px-5">
-        <TaskDisplay showToast={showToast} dataTasks={savedTask} theme={theme} />
+        <TaskDisplay
+          showToast={showToast}
+          dataTasks={savedTask}
+          theme={theme}
+					refreshTasks={refreshTasks}
+        />
       </div>
     </div>
   );

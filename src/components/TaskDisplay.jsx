@@ -1,12 +1,12 @@
 import { EllipsisVertical } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import EditModal from "./EditModal";
-import ToastMessage from "./ToastMessage";
+import DeleteModal from "./DeleteModal";
 
-const TaskDisplay = ({ dataTasks = [], showToast }) => {
+const TaskDisplay = ({ dataTasks = [], showToast, refreshTasks, theme }) => {
   const [openMenu, setOpenMenu] = useState(null);
   const [editModal, setEditModal] = useState(null);
-	
+	const [deleteModal, setDeleteModal] = useState(null);
 
   const menuRefs = useRef({});
 
@@ -17,6 +17,12 @@ const TaskDisplay = ({ dataTasks = [], showToast }) => {
   const openEditModal = (id) => {
     setEditModal((prev) => (prev === id ? null : id));
 		setOpenMenu(null)
+  };
+
+	const openDeleteModal = (id) => {
+    setDeleteModal((prev) => (prev === id ? null : id));
+		setOpenMenu(null)
+
   };
   // Close on outside click
   useEffect(() => {
@@ -83,13 +89,20 @@ const TaskDisplay = ({ dataTasks = [], showToast }) => {
                   >
                     Edit
                   </div>
-                  <div className="cursor-pointer p-1.5 text-white">Delete</div>
+                  <div 
+										onClick={() => openDeleteModal(task.id)}
+										className="cursor-pointer p-1.5 text-white">Delete</div>
                 </div>
               )}
 
               {editModal === task.id && (
-								<EditModal showToast={showToast} task={task} closeModal={setEditModal}/>
+								<EditModal showToast={showToast} refreshTasks={refreshTasks} task={task} closeModal={setEditModal}/>
               )}
+
+							{deleteModal === task.id && (
+								<DeleteModal theme={theme} showToast={showToast} refreshTasks={refreshTasks} task={task} closeModal={setDeleteModal}/>
+              )}
+
             </div>
           ))}
         </div>
