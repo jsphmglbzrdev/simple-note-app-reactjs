@@ -11,6 +11,9 @@ It’s a simple project built for practicing React concepts and UI design.
 **Simple Note App** is designed to help users jot down quick notes and organize their thoughts.  
 It uses `localStorage` to persist notes between sessions, so your data stays even after a browser refresh.
 
+**Beginenr Project** this project is suited for beginner to understand and practice the usage of different react hooks, proper props, managing the state, 
+and storing the data on web local storage.
+
 ---
 
 ## 🚀 Features
